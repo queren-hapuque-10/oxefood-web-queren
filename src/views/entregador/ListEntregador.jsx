@@ -51,7 +51,7 @@ render(){
                     <Divider />
 
                     <div style={{marginTop: '4%'}}>
-
+                      <Link to={'/form-entregador'}>
                         <Button
                             inverted
                             circular
@@ -61,13 +61,14 @@ render(){
                             floated='right'
                         >
                             <Icon name='clipboard outline' />
-                            <Link to={'/form-entregador'}>Novo</Link>
-                        </Button>
+                          Novo 
+                        </Button></Link>
+                       
                         <br/><br/><br/>
                       
-                      <Table color='orange' sortable celled>
+                      <Table color='orange' sortable celled  style={{marginLeft: '-20%'}}>
 
-                          <Table.Header>
+                          <Table.Header >
                               <Table.Row>
                                   <Table.HeaderCell>Nome</Table.HeaderCell>
                                   <Table.HeaderCell>CPF</Table.HeaderCell>
@@ -85,7 +86,7 @@ render(){
                                   <Table.HeaderCell>Cep</Table.HeaderCell>
                                   <Table.HeaderCell>UF</Table.HeaderCell>
 
-                                  <Table.HeaderCell textAlign='center' width={2}>Ações</Table.HeaderCell>
+                                  <Table.HeaderCell textAlign='center' width={2} style={{paddingRight: '40px', paddingLeft: '40px'}}>Ações</Table.HeaderCell>
                               </Table.Row>
                           </Table.Header>
                      
@@ -111,7 +112,7 @@ render(){
                                       <Table.Cell>{entregador.enderecoUf}</Table.Cell>
 
 
-                                      <Table.Cell textAlign='center'>
+                                      <Table.Cell textAlign='center' >
                                          
                                           <Button
                                               inverted

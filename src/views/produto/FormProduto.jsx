@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import { Link } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
 
 class FormProduto extends React.Component{
@@ -124,6 +125,7 @@ console.log(produtoRequest)
 
 								<Form.Group widths='equal' style={{marginTop: '4%'}}  className='form--empresa-salvar'>
 
+								<Link to={'/list-produto'}>
 									<Button
 										type="button"
 										inverted
@@ -131,11 +133,11 @@ console.log(produtoRequest)
 										icon
 										labelPosition='left'
 										color='orange'
-										onClick={this.listar}
-										>
+									
+										>Voltar
 										<Icon name='reply' />
-										Voltar
 									</Button>
+									</Link>
 
 									<Container textAlign='right'>
 										

@@ -119,7 +119,7 @@ class FormCliente extends React.Component{
 								</Form.Group>
 
 								<Form.Group widths='equal' style={{marginTop: '4%'}}  className='form--empresa-salvar'>
-
+								<Link to={'/list-cliente'}>
 									<Button
 										type="button"
 										inverted
@@ -127,12 +127,11 @@ class FormCliente extends React.Component{
 										icon
 										labelPosition='left'
 										color='orange'
-						
-										>
+									
+										>Voltar
 										<Icon name='reply' />
-										<Link to={'/list-cliente'}>Voltar</Link>
-
 									</Button>
+									</Link>
 
 									<Container textAlign='right'>
 										
