@@ -30,14 +30,18 @@ class ListProduto extends React.Component{
 
 formatarData = (dataParam) => {
 
-    let data = new Date(dataParam);
-    console.log(data.getDay());
-    let dia = data.getDate() < 10 ? "0" + data.getDate() : data.getDate();
-    let mes = (data.getMonth() + 1) < 10 ? "0" + (data.getMonth() + 1) : (data.getMonth() + 1);
-    let dataFormatada = dia + "/" + mes + "/" + data.getFullYear();
-   
+    if (dataParam == null || dataParam == '') {
+        return ''
+    }
+    
+    let dia = dataParam.substr(8,2);
+    let mes = dataParam.substr(5,2);
+    let ano = dataParam.substr(0,4);
+    let dataFormatada = dia + '/' + mes + '/' + ano;
+
     return dataFormatada
 };
+
 render(){
     return(
         <div>

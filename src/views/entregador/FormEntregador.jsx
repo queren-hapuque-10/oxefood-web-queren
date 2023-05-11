@@ -93,10 +93,14 @@ class FormEntregador extends React.Component{
 
                                     <Form.Input
 										fluid
-										label='RG'
+										label='RG'>
+										<InputMask 
+										mask="99.999.999"
 										value={this.state.rg}
 										onChange={e => this.setState({rg: e.target.value})}
 										/> 
+										</Form.Input>
+
 								</Form.Group>
 								
 								<Form.Group>

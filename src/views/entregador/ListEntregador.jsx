@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Divider, Icon, Table } from 'semantic-ui-react';
+import { Button, Container, Divider, Icon, Modal, Table, TableCell } from 'semantic-ui-react';
 
 class ListEntregador extends React.Component{
 
@@ -30,13 +30,18 @@ class ListEntregador extends React.Component{
 
 formatarData = (dataParam) => {
 
-    let data = new Date(dataParam);
-    let dia = data.getDate() < 10 ? "0" + data.getDate() : data.getDate();
-    let mes = (data.getMonth() + 1) < 10 ? "0" + (data.getMonth() + 1) : (data.getMonth() + 1);
-    let dataFormatada = dia + "/" + mes + "/" + data.getFullYear();
-   
+    if (dataParam == null || dataParam == '') {
+        return ''
+    }
+    
+    let dia = dataParam.substr(8,2);
+    let mes = dataParam.substr(5,2);
+    let ano = dataParam.substr(0,4);
+    let dataFormatada = dia + '/' + mes + '/' + ano;
+
     return dataFormatada
 };
+
 
 render(){
     return(
@@ -66,16 +71,11 @@ render(){
                        
                         <br/><br/><br/>
                       
-                      <Table color='orange' sortable celled  style={{marginLeft: '-20%'}}>
+                      <Table color='orange' sortable celled >
 
                           <Table.Header >
                               <Table.Row>
                                   <Table.HeaderCell>Nome</Table.HeaderCell>
-                                  <Table.HeaderCell>CPF</Table.HeaderCell>
-                                  <Table.HeaderCell>RG</Table.HeaderCell>
-                                  <Table.HeaderCell>Data de Nascimento</Table.HeaderCell>
-                                  <Table.HeaderCell>Fone Celular</Table.HeaderCell>
-                                  <Table.HeaderCell>Fone Fixo</Table.HeaderCell>
                                   <Table.HeaderCell>N° Entregas Realizadas</Table.HeaderCell>
                                   <Table.HeaderCell>Valor do Frete</Table.HeaderCell>
                                   <Table.HeaderCell>Rua</Table.HeaderCell>
@@ -85,7 +85,7 @@ render(){
                                   <Table.HeaderCell>Cidade</Table.HeaderCell>
                                   <Table.HeaderCell>Cep</Table.HeaderCell>
                                   <Table.HeaderCell>UF</Table.HeaderCell>
-
+                                  <Table.HeaderCell>Mais Informações</Table.HeaderCell>
                                   <Table.HeaderCell textAlign='center' width={2} style={{paddingRight: '40px', paddingLeft: '40px'}}>Ações</Table.HeaderCell>
                               </Table.Row>
                           </Table.Header>
@@ -96,11 +96,6 @@ render(){
 
                                   <Table.Row>
                                       <Table.Cell>{entregador.nome}</Table.Cell>
-                                      <Table.Cell>{entregador.cpf}</Table.Cell>
-                                      <Table.Cell>{entregador.rg}</Table.Cell>
-                                      <Table.Cell>{this.formatarData(entregador.dataNascimento)}</Table.Cell>
-                                      <Table.Cell>{entregador.foneCelular}</Table.Cell>
-                                      <Table.Cell>{entregador.foneFixo}</Table.Cell>
                                       <Table.Cell>{entregador.qtdEntregasRealizadas}</Table.Cell>
                                       <Table.Cell>{entregador.valorFrete}</Table.Cell>
                                       <Table.Cell>{entregador.enderecoRua}</Table.Cell> 
@@ -110,7 +105,16 @@ render(){
                                       <Table.Cell>{entregador.enderecoCidade}</Table.Cell>
                                       <Table.Cell>{entregador.enderecoCep}</Table.Cell>
                                       <Table.Cell>{entregador.enderecoUf}</Table.Cell>
+                                      <TableCell textAlign='center'>
+                                       <Modal
+                                        trigger={<Button><i>info</i></Button>}
+                                        header='Mais Informações'
+                                        content={"CPF: "+entregador.cpf+" | RG: "+entregador.rg+
+                                        " | Data de Nascimento: "+entregador.dataNascimento+" | Celular: "+entregador.foneCelular+"  | Tel Fixo: "+entregador.foneFixo} 
 
+                                        actions={[ {key: 'done', content: 'Fechar', positive:true}]}
+                                        />
+                                      </TableCell>
 
                                       <Table.Cell textAlign='center' >
                                          
@@ -129,6 +133,7 @@ render(){
                                                    title='Clique aqui para remover este entregador' />
 
                                            </Table.Cell>
+
                                        </Table.Row>
                                    ))}
 
