@@ -10,6 +10,7 @@ const ufList = [
 	{ key: 'f', text: 'Paraíba', value: 'PB' },
 	{ key: 'm', text: 'Pernambuco', value: 'PE' },
   ]
+
 class FormEntregador extends React.Component{
     state = {
 		nome: null,
@@ -233,14 +234,17 @@ class FormEntregador extends React.Component{
 											/>
 										</Form.Input>
 
-                                    <Form.Input
-									required
-										fluid
-										label='Uf'
-                                        width={6}
-										value={this.state.enderecoUf}
-										onChange={e => this.setState({enderecoUf: e.target.value})}
-										/>
+                                   <Form.Select
+									fluid
+									label='UF'
+									options={ufList}
+									placeholder='Selecione'
+									value={this.state.enderecoEstado}
+									onChange={(e,{value}) => {
+										this.setState({enderecoEstado: value})
+									}}
+								/>
+								
 								</Form.Group>
 								<Form.Group inline>
 									<label>Ativo: </label>
