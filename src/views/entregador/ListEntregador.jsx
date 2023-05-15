@@ -1,13 +1,16 @@
 import axios from 'axios';
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Divider, Icon, Modal, Table, TableCell } from 'semantic-ui-react';
+import { Button, Container, Divider, Icon, List, Modal, Segment, Table } from 'semantic-ui-react';
+import { ENDERECO_API } from '../../views/util/Constantes';
 
 class ListEntregador extends React.Component{
 
    state = {
 
-       listaEntregadores: []
+    listaEntregadores: [],
+    openModal: false,
+    entregadorObj: {}
       
    }
 
@@ -18,7 +21,7 @@ class ListEntregador extends React.Component{
    }
    carregarLista = () => {
 
-    axios.get("http://localhost:8082/api/entregador")
+    axios.get(ENDERECO_API + "api/entregador")
     .then((response) => {
        
         this.setState({
@@ -42,6 +45,25 @@ formatarData = (dataParam) => {
     return dataFormatada
 };
 
+setOpenModal = (val) => {
+
+    this.setState({ 
+        openModal: val
+    })
+};
+
+exibirDetalheEntregador = (id) => {
+
+    axios.get(ENDERECO_API + "api/entregador/" + id)
+    .then((response) => {
+
+        this.setState({
+            entregadorObj: response.data,
+            openModal: true,
+        })
+    })
+
+};
 
 render(){
     return(
@@ -76,48 +98,36 @@ render(){
                           <Table.Header >
                               <Table.Row>
                                   <Table.HeaderCell>Nome</Table.HeaderCell>
-                                  <Table.HeaderCell>N° Entregas Realizadas</Table.HeaderCell>
-                                  <Table.HeaderCell>Valor do Frete</Table.HeaderCell>
-                                  <Table.HeaderCell>Rua</Table.HeaderCell>
-                                  <Table.HeaderCell>Bairro</Table.HeaderCell>
-                                  <Table.HeaderCell>Numero</Table.HeaderCell>
-                                  <Table.HeaderCell>Complemento</Table.HeaderCell>
-                                  <Table.HeaderCell>Cidade</Table.HeaderCell>
-                                  <Table.HeaderCell>Cep</Table.HeaderCell>
-                                  <Table.HeaderCell>UF</Table.HeaderCell>
-                                  <Table.HeaderCell>Mais Informações</Table.HeaderCell>
-                                  <Table.HeaderCell textAlign='center' width={2} style={{paddingRight: '40px', paddingLeft: '40px'}}>Ações</Table.HeaderCell>
+                                  <Table.HeaderCell>CPF</Table.HeaderCell>
+                                  <Table.HeaderCell>Data Nascimento</Table.HeaderCell>
+                                  <Table.HeaderCell>Fone Celular</Table.HeaderCell>
+                                  <Table.HeaderCell>Fone Fixo</Table.HeaderCell>
+                                  <Table.HeaderCell textAlign='center' width={3}>Ações</Table.HeaderCell>
                               </Table.Row>
                           </Table.Header>
                      
                           <Table.Body>
 
-                              { this.state.listaEntregadores.map(entregador => (
+                          { this.state.listaEntregadores.map(entregador => (
 
                                   <Table.Row>
                                       <Table.Cell>{entregador.nome}</Table.Cell>
-                                      <Table.Cell>{entregador.qtdEntregasRealizadas}</Table.Cell>
-                                      <Table.Cell>{entregador.valorFrete}</Table.Cell>
-                                      <Table.Cell>{entregador.enderecoRua}</Table.Cell> 
-                                      <Table.Cell>{entregador.enderecoBairro}</Table.Cell>
-                                      <Table.Cell>{entregador.enderecoNumero}</Table.Cell>
-                                      <Table.Cell>{entregador.enderecoComplemento}</Table.Cell>
-                                      <Table.Cell>{entregador.enderecoCidade}</Table.Cell>
-                                      <Table.Cell>{entregador.enderecoCep}</Table.Cell>
-                                      <Table.Cell>{entregador.enderecoUf}</Table.Cell>
-                                      <TableCell textAlign='center'>
-                                       <Modal
-                                        trigger={<Button><i>info</i></Button>}
-                                        header='Mais Informações'
-                                        content={"CPF: "+entregador.cpf+" | RG: "+entregador.rg+
-                                        " | Data de Nascimento: "+entregador.dataNascimento+" | Celular: "+entregador.foneCelular+"  | Tel Fixo: "+entregador.foneFixo} 
-
-                                        actions={[ {key: 'done', content: 'Fechar', positive:true}]}
-                                        />
-                                      </TableCell>
+                                            <Table.Cell>{entregador.cpf}</Table.Cell>
+                                            <Table.Cell>{this.formatarData(entregador.dataNascimento)}</Table.Cell>
+                                            <Table.Cell>{entregador.foneCelular}</Table.Cell>
+                                            <Table.Cell>{entregador.foneFixo}</Table.Cell>
 
                                       <Table.Cell textAlign='center' >
                                          
+                                      <Button
+                                                   inverted
+                                                   circular
+                                                   icon='file alternate outline'
+                                                   color='green'
+                                                   title='Clique aqui para exibir este entregador' 
+                                                   onClick={e => this.exibirDetalheEntregador(entregador.id)}
+                                                />  &nbsp;
+
                                           <Button
                                               inverted
                                               circular
@@ -136,15 +146,132 @@ render(){
 
                                        </Table.Row>
                                    ))}
+    </Table.Body>
+    </Table>
+    </div>
+    </Container>
+    </div>
 
-                               </Table.Body>
-                           </Table>
-                       </div>
-                   </Container>
-               </div>
-           </div>
-       )
-   }
+            <Modal
+            basic
+            onClose={() => this.setOpenModal(false)}
+            onOpen={() => this.setOpenModal(true)}
+            open={this.state.openModal}
+            >
+
+<Modal.Header>Dados do Entregador</Modal.Header>
+
+<Modal.Content>
+<Modal.Description>
+
+   <Segment>
+       <List relaxed>
+           <List.Item>
+               <List.Icon name='angle right' verticalAlign='middle' />
+               <List.Content>
+                   <List.Description>
+                       <strong>Nome:</strong> &nbsp; &nbsp; 
+                       {this.state.entregadorObj.nome}
+                   </List.Description>
+               </List.Content>
+           </List.Item>
+           <List.Item>
+               <List.Icon name='angle right' verticalAlign='middle' />
+               <List.Content>
+                   <List.Description>
+                       <strong>CPF:</strong> &nbsp; &nbsp; 
+                       {this.state.entregadorObj.cpf}
+                   </List.Description>
+               </List.Content>
+           </List.Item>
+           <List.Item>
+               <List.Icon name='angle right' verticalAlign='middle' />
+               <List.Content>
+                   <List.Description>
+                       <strong>RG:</strong> &nbsp; &nbsp; 
+                       {this.state.entregadorObj.rg}
+                   </List.Description>
+               </List.Content>
+           </List.Item>
+           <List.Item>
+               <List.Icon name='angle right' verticalAlign='middle' />
+               <List.Content>
+                   <List.Description>
+                       <strong>Data de Nascimento:</strong> &nbsp; &nbsp; 
+                       {this.formatarData(this.state.entregadorObj.dataNascimento)}
+                   </List.Description>
+               </List.Content>
+           </List.Item>
+           <List.Item>
+               <List.Icon name='angle right' verticalAlign='middle' />
+               <List.Content>
+                   <List.Description>
+                       <strong>Celular:</strong> &nbsp; &nbsp; 
+                       {this.state.entregadorObj.foneCelular}
+                   </List.Description>
+               </List.Content>
+           </List.Item>
+           <List.Item>
+               <List.Icon name='angle right' verticalAlign='middle' />
+               <List.Content>
+                   <List.Description>
+                       <strong>Fixo:</strong> &nbsp; &nbsp; 
+                       {this.state.entregadorObj.foneFixo}
+                   </List.Description>
+               </List.Content>
+           </List.Item>
+           <List.Item>
+               <List.Icon name='angle right' verticalAlign='middle' />
+               <List.Content>
+                   <List.Description>
+                       <strong>Quantidade de Entregas Realizadas:</strong> &nbsp; &nbsp; 
+                       {this.state.entregadorObj.qtdEntregasRealizadas}
+                   </List.Description>
+               </List.Content>
+           </List.Item>
+           <List.Item>
+               <List.Icon name='angle right' verticalAlign='middle' />
+               <List.Content>
+                   <List.Description>
+                       <strong>Valor Frete:</strong> &nbsp; &nbsp; 
+                       {this.state.entregadorObj.valorFrete}
+                   </List.Description>
+               </List.Content>
+           </List.Item>
+           <List.Item>
+               <List.Icon name='angle right' verticalAlign='middle' />
+               <List.Content>
+                   <List.Description>
+                       <strong>Endereço:</strong> &nbsp; &nbsp; 
+                       {this.state.entregadorObj.enderecoRua}, {this.state.entregadorObj.enderecoNumero}, {this.state.entregadorObj.enderecoBairro}, {this.state.entregadorObj.enderecoComplemento}, {this.state.entregadorObj.enderecoCidade} - {this.state.entregadorObj.enderecoUf} - CEP: {this.state.entregadorObj.enderecoCep}
+                   </List.Description>
+               </List.Content>
+           </List.Item>
+           <List.Item>
+               <List.Icon name='angle right' verticalAlign='middle' />
+               <List.Content>
+                   <List.Description>
+                       <strong>Ativo:</strong> &nbsp; &nbsp; 
+                       { this.state.entregadorObj.ativo === true && 
+                           <>Sim</>
+                       }
+                       { this.state.entregadorObj.ativo === false && 
+                           <>Não</>
+                       }
+                   </List.Description>
+               </List.Content>
+           </List.Item>
+       </List>
+   </Segment>
+
+</Modal.Description>
+</Modal.Content>
+
+</Modal>
+
+</div>
+)
+}
 }
 
 export default ListEntregador;

@@ -3,25 +3,31 @@ import React from "react";
 import InputMask from 'react-input-mask';
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
+import { ENDERECO_API } from '../../views/util/Constantes';
 
+const ufList = [
+	{ key: 'o', text: 'Alagoas', value: 'AL' },
+	{ key: 'f', text: 'Paraíba', value: 'PB' },
+	{ key: 'm', text: 'Pernambuco', value: 'PE' },
+  ]
 class FormEntregador extends React.Component{
     state = {
 		nome: null,
 		cpf: null,
-        rg:null,
+		rg: null,
 		dataNascimento: null,
 		foneCelular: null,
 		foneFixo: null,
-        qtdEntregasRealizadas:null,
-        valorFrete:null,
-        enderecoRua:null,
-        enderecoNumero:null,
-        enderecoBairro:null,
-        enderecoCidade:null,
-        enderecoCep:null,
-        enderecoUf:null,
-        enderecoComplemento:null
-
+		qtdEntregasRealizadas: null,
+		valorFrete: null,
+		enderecoRua: null,
+		enderecoNumero: null,
+		enderecoBairro: null,
+		enderecoCep: null,
+		enderecoCidade: null,
+		enderecoEstado: null,
+		enderecoComplemento: null,
+		ativo: true
 	} 
 
 	salvar = () => {
@@ -42,10 +48,11 @@ class FormEntregador extends React.Component{
         enderecoCidade: this.state.enderecoCidade,
         enderecoCep: this.state.enderecoCep,
         enderecoUf: this.state.enderecoUf,
-        enderecoComplemento: this.state.enderecoComplemento
+        enderecoComplemento: this.state.enderecoComplemento,
+		ativo: this.state.ativo
 
 		}
-		axios.post("http://localhost:8082/api/entregador", entregadorRequest)
+		axios.post(ENDERECO_API + "api/entregador", entregadorRequest)
 		.then((response) => {
 			console.log('Entregador cadastrado com sucesso.')
 		})
@@ -83,6 +90,7 @@ class FormEntregador extends React.Component{
 
 									<Form.Input
 										fluid
+										required
 										label='CPF'>
 										<InputMask 
 										mask="999.999.999-99"
@@ -93,6 +101,7 @@ class FormEntregador extends React.Component{
 
                                     <Form.Input
 										fluid
+										required
 										label='RG'>
 										<InputMask 
 										mask="99.999.999"
@@ -105,6 +114,7 @@ class FormEntregador extends React.Component{
 								
 								<Form.Group>
                                 <Form.Input
+								required
                                         fluid
                                         label='Data de Nascimento'
                                         width={6}>
@@ -118,6 +128,7 @@ class FormEntregador extends React.Component{
                                         </Form.Input>
 
 									<Form.Input
+									required
 										fluid
 										label='Fone Celular'
                                         width={6}>
@@ -129,6 +140,7 @@ class FormEntregador extends React.Component{
 									</Form.Input>
 
 									<Form.Input
+									required
 										fluid
 										label='Fone Fixo'
                                         width={6}>
@@ -142,6 +154,7 @@ class FormEntregador extends React.Component{
 
 								<Form.Group widths='equal'>	
                                     <Form.Input
+									required
 										fluid
 										label= 'N° Entregas Realizadas'
                                         width={6}
@@ -151,6 +164,7 @@ class FormEntregador extends React.Component{
 									
 
                                     <Form.Input
+									required
 										fluid
 										label='Valor do Frete'
                                         width={6}
@@ -162,6 +176,7 @@ class FormEntregador extends React.Component{
 
 								<Form.Group widths='equal'>
                                     <Form.Input
+									required
 										fluid
 										label='Rua'
                                         width={6}
@@ -170,6 +185,7 @@ class FormEntregador extends React.Component{
 										/>
 									
                                     <Form.Input
+									required
 										fluid
 										label='Bairro'
                                         width={6}
@@ -178,6 +194,7 @@ class FormEntregador extends React.Component{
 										/>
 
                                     <Form.Input
+									required
 										fluid
 										label='Numero'
                                         width={6}
@@ -186,6 +203,7 @@ class FormEntregador extends React.Component{
 										/>
 
 									<Form.Input
+									required
 										fluid
 										label='Complemento'
                                         width={6}
@@ -196,6 +214,7 @@ class FormEntregador extends React.Component{
 
 								<Form.Group widths='equal'>
                                     <Form.Input
+									required
 										fluid
 										label='Cidade'
                                         width={6}
@@ -203,22 +222,45 @@ class FormEntregador extends React.Component{
 										onChange={e => this.setState({enderecoCidade: e.target.value})}
 										/>
 
-                                    <Form.Input
+								<Form.Input
 										fluid
-										label='Cep'
-                                        width={6}
-										value={this.state.enderecoCep}
-										onChange={e => this.setState({enderecoCep: e.target.value})}
-										/>
+										label='CEP'
+										width={2}>
+											<InputMask 
+												mask="99.999-999"
+												value={this.state.enderecoCep}
+												onChange={e => this.setState({enderecoCep: e.target.value})}
+											/>
+										</Form.Input>
 
                                     <Form.Input
+									required
 										fluid
 										label='Uf'
                                         width={6}
 										value={this.state.enderecoUf}
 										onChange={e => this.setState({enderecoUf: e.target.value})}
 										/>
+								</Form.Group>
+								<Form.Group inline>
+									<label>Ativo: </label>
 
+									<Form.Radio
+										label='Sim'
+										checked={this.state.ativo}
+										onChange={e => this.setState({
+											ativo: true
+										})}
+									/>
+
+									<Form.Radio
+										label='Não'
+										value='Não'
+										checked={!this.state.ativo}
+										onChange={e => this.setState({
+											ativo: false
+										})}
+									/>
 
 								</Form.Group>
 
