@@ -19,7 +19,6 @@ class FormCliente extends React.Component{
 	salvar = () => {
 
 		let clienteRequest = {
-
 			nome: this.state.nome,
 			cpf: this.state.cpf,
 			dataNascimento: this.state.dataNascimento,
