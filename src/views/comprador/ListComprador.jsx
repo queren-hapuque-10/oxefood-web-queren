@@ -103,7 +103,7 @@ render(){
                                   <Table.HeaderCell>Comissao</Table.HeaderCell>
                                   <Table.HeaderCell>QTDComprasMediasMes</Table.HeaderCell>
                                   <Table.HeaderCell>contratado Em</Table.HeaderCell>
-                                  <Table.HeaderCell textAlign='center' width={3}>Ações</Table.HeaderCell>
+                                  <Table.HeaderCell textAlign='center' width={2}>Ações</Table.HeaderCell>
                               </Table.Row>
                           </Table.Header>
                      
