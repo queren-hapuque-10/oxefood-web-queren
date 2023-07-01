@@ -2,119 +2,112 @@ import axios from 'axios';
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Icon, Table } from 'semantic-ui-react';
+import { ENDERECO_API } from '../../views/util/Constantes';
 
 class ListProduto extends React.Component{
 
-   state = {
+    state = {
 
-    listaProdutos: []
+       listaProdutos: []
       
-   }
-
-   componentDidMount = () => {
-      
-       this.carregarLista();
-      
-   }
-   carregarLista = () => {
-
-    axios.get("http://localhost:8082/api/produto")
-    .then((response) => {
-       
-        this.setState({
-            listaProdutos: response.data
-        })
-    })
-
-};
-
-formatarData = (dataParam) => {
-
-    if (dataParam == null || dataParam == '') {
-        return ''
     }
-    
-    let dia = dataParam.substr(8,2);
-    let mes = dataParam.substr(5,2);
-    let ano = dataParam.substr(0,4);
-    let dataFormatada = dia + '/' + mes + '/' + ano;
 
-    return dataFormatada
-};
+    componentDidMount = () => {
+      
+        this.carregarLista();
+      
+    }
 
-render(){
-    return(
-        <div>
+    carregarLista = () => {
 
-            <div style={{marginTop: '3%'}}>
+        axios.get(ENDERECO_API + "api/produto")
+        .then((response) => {
+          
+            this.setState({
+                listaProdutos: response.data
+            })
+        })
 
-                <Container textAlign='justified' >
+    };
 
-                    <h2> Produto </h2>
+    render(){
+        return(
+            <div>
 
-                    <Divider />
+                <div style={{marginTop: '3%'}}>
 
-                    <div style={{marginTop: '4%'}}>
-                         <Link to={'/form-produto'}>
-                        <Button
-                            inverted
-                            circular
-                            icon
-                            labelPosition='left'
-                            color='orange'
-                            floated='right'
-                        >
-                            <Icon name='clipboard outline' />
-                           Novo
-                        </Button>
-                        </Link>
-                        
-                        <br/><br/><br/>
+                    <Container textAlign='justified' >
+
+                        <h2> Produto </h2>
+
+                        <Divider />
+
+                        <div style={{marginTop: '4%'}}>
+
+                            <Button
+                                inverted
+                                circular
+                                icon
+                                labelPosition='left'
+                                color='orange'
+                                floated='right'
+                            >
+                                <Icon name='clipboard outline' />
+                                <Link to={'/form-produto'}>Novo</Link>
+                            </Button>
+
+                            <br/><br/><br/>
                       
-                      <Table color='orange' sortable celled>
+                            <Table color='orange' sortable celled>
 
-                          <Table.Header>
-                              <Table.Row>
-                                  <Table.HeaderCell>Código</Table.HeaderCell>
-                                  <Table.HeaderCell>Título</Table.HeaderCell>
-                                  <Table.HeaderCell>Descrição</Table.HeaderCell>
-                                  <Table.HeaderCell>Valor Unitário</Table.HeaderCell>
-                                  <Table.HeaderCell>Tempo de Entrega Mínimo</Table.HeaderCell>
-                                  <Table.HeaderCell>Tempo de Entrega Máximo</Table.HeaderCell>
-                                  <Table.HeaderCell textAlign='center' width={2}>Ações</Table.HeaderCell>
-                              </Table.Row>
-                          </Table.Header>
-                     
-                          <Table.Body>
+                                <Table.Header>
+                                    <Table.Row>
+                                        <Table.HeaderCell>Código</Table.HeaderCell>
+                                        <Table.HeaderCell>Categoria</Table.HeaderCell>
+                                        <Table.HeaderCell>Título</Table.HeaderCell>
+                                        <Table.HeaderCell>Descrição</Table.HeaderCell>
+                                        <Table.HeaderCell>Valor Unitário</Table.HeaderCell>
+                                        <Table.HeaderCell>Tempo de Mínimo de Entrega</Table.HeaderCell>
+                                        <Table.HeaderCell>Tempo de Máximo de Entrega</Table.HeaderCell>
+                                        <Table.HeaderCell textAlign='center' width={2}>Ações</Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+                          
+                                <Table.Body>
 
-                              { this.state.listaProdutos.map(produto => (
+                                    { this.state.listaProdutos.map(p => (
 
-                                  <Table.Row>
-                                      <Table.Cell>{produto.codigo}</Table.Cell>
-                                      <Table.Cell>{produto.titulo}</Table.Cell>
-                                      <Table.Cell>{produto.descricao}</Table.Cell>
-                                      <Table.Cell>{produto.valorUnitario}</Table.Cell>
-                                      <Table.Cell>{produto.tempoEntregaMinimo}</Table.Cell>
-                                      <Table.Cell>{produto.tempoEntregaMaximo}</Table.Cell>
-                                      <Table.Cell textAlign='center'>
-                                         
-                                          <Button
-                                              inverted
-                                              circular
-                                              icon='edit'
-                                              color='blue'
-                                              itle='Clique aqui para editar os dados deste Produto' /> &nbsp;
-
-<Button
+                                        <Table.Row key={p.id}>
+                                            <Table.Cell>{p.codigo}</Table.Cell>
+                                            <Table.Cell>{p.categoria.descricao}</Table.Cell>
+                                            <Table.Cell>{p.titulo}</Table.Cell>
+                                            <Table.Cell>{p.descricao}</Table.Cell>
+                                            <Table.Cell>{p.valorUnitario}</Table.Cell>
+                                            <Table.Cell>{p.tempoEntregaMinimo}</Table.Cell>
+                                            <Table.Cell>{p.tempoEntregaMaximo}</Table.Cell>
+                                            <Table.Cell textAlign='center'>
+                                              
+                                                <Button
+                                                    inverted
+                                                    circular
+                                                    color='green'
+                                                    title='Clique aqui para editar os dados deste cliente'
+                                                    icon>
+                                                        <Link to="/form-produto" state={{id: p.id}} style={{color: 'green'}}> <Icon name='edit' /> </Link>
+                                                </Button>
+                                                
+                                                &nbsp;
+                                                   
+                                                <Button
                                                    inverted
                                                    circular
                                                    icon='trash'
                                                    color='red'
-                                                   title='Clique aqui para remover este Produto' />
+                                                   title='Clique aqui para remover este cliente' />
 
-                                           </Table.Cell>
-                                       </Table.Row>
-                                   ))}
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    ))}
 
                                </Table.Body>
                            </Table>
