@@ -2,7 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Header, Icon, Modal, Table } from 'semantic-ui-react';
-import { ENDERECO_API } from '../util/Constantes';
+import { ENDERECO_API } from '../../views/util/Constantes';
+import MenuSistema from '../../MenuSistema';
 
 export default function ListCategoriaProduto () {
 
@@ -52,6 +53,7 @@ export default function ListCategoriaProduto () {
 
     return(
         <div>
+ <MenuSistema />
 
             <div style={{marginTop: '3%'}}>
 

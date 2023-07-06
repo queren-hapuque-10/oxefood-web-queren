@@ -1,9 +1,12 @@
+import React from "react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import {mensagemErro, notifyError, notifySuccess } from '../../views/util/Util';
+import { useEffect, useState } from "react";
 import InputMask from 'react-input-mask';
 import { Link, useLocation } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
 import { ENDERECO_API } from '../../views/util/Constantes';
+import MenuSistema from "../../MenuSistema";
 
 export default function FormCliente () {
 
@@ -53,8 +56,13 @@ export default function FormCliente () {
 		} else { //Cadastro:
 			
 			axios.post(ENDERECO_API + "api/cliente", clienteRequest)
-			.then((response) => { console.log('Cliente cadastrado com sucesso.') })
-			.catch((error) => { console.log('Erro ao incluir o cliente.') })
+			.then((response) => { notifySuccess('Cliente cadastrado com sucesso.')		})
+			.catch((error) => { if (error.response) {
+				notifyError(error.response.data.errors[0].defaultMessage)
+				} else {
+				notifyError(mensagemErro)
+				} 
+				})
 		}
 	 }
 
@@ -74,6 +82,7 @@ export default function FormCliente () {
 	
 	return(
 		<div>
+			 <MenuSistema />
 
 			<div style={{marginTop: '3%'}}>
 

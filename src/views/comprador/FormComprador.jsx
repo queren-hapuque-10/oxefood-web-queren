@@ -11,33 +11,34 @@ class FormComprador extends React.Component{
 
 		nome: null,
 		enderecoComercial: null,
-        enderecoResidencial: null,
-        comissao: null,
+		enderecoResidencial: null,
+		comissao: null,
+		trabahoHomeOffice: false,
         qtdComprasMediasMes: null,
-        contratadoEm: null,
-        trabalhoHomeOffice: true
-	} 
+        contratadoEm: null
+	}
 
 	salvar = () => {
 
 		let compradorRequest = {
+
 			nome: this.state.nome,
 			enderecoComercial: this.state.enderecoComercial,
-            enderecoResidencial: this.state.enderecoResidencial,
-            comissao: this.state.comissao,
-            qtdComprasMediasMes: parseInt(this.state.qtdComprasMediasMes),
-            contratadoEm: this.state.contratadoEm,
-            trabalhoHomeOffice: this.state.trabalhoHomeOffice,
+			enderecoResidencial: this.state.enderecoResidencial,
+			comissao: this.state.comissao,
+			trabahoHomeOffice: this.state.trabahoHomeOffice,
+            qtdComprasMediasMes: this.state.qtdComprasMediasMes,
+            contratadoEm: this.state.contratadoEm
 		}
+
 		axios.post(ENDERECO_API + "api/comprador", compradorRequest)
 		.then((response) => {
 			console.log('Comprador cadastrado com sucesso.')
 		})
 		.catch((error) => {
-			console.log('Erro ao incluir o comprador.')
+			console.log('Erro ao incluir o um comprador.')
 		})
 	}
-
 
     render(){
         return(
@@ -62,30 +63,28 @@ class FormComprador extends React.Component{
 										fluid
 										label='Nome'
 										maxLength="100"
-                                        width={6}
+                                        width={7}
 										value={this.state.nome}
 										onChange={e => this.setState({nome: e.target.value})}
-
 									/>
-                                 <Form.Input
-                                    required
-                                    fluid
-                                    label='Valor da Comissão'
-                                    width={4}
-                                    value={this.state.comissao}
-                                    onChange={e => this.setState({comissao: e.target.value})}
 
-                                />
-                                 <Form.Input
-                                    required
-                                    fluid
-                                    label='QTD Compras em Média no Mês'
-                                    width={4}
-                                    value={this.state.qtdComprasMediasMes}
-                                    onChange={e => this.setState({qtdComprasMediasMes: e.target.value})}
+                                    <Form.Input
+										fluid
+										label='Valor de Comissão'
+                                        width={4}
+										value={this.state.comissao}
+										onChange={e => this.setState({comissao: e.target.value})}
+									/>
 
-                                />
-                                <Form.Input
+                                    <Form.Input
+										fluid
+										label='QTD Compras em Média no Mês'
+                                        width={4}
+										value={this.state.qtdComprasMediasMes}
+										onChange={e => this.setState({qtdComprasMediasMes: e.target.value})}
+									/>
+
+                                    <Form.Input
                                         fluid
                                         label='Contratado Em'
                                         width={4}
@@ -93,60 +92,52 @@ class FormComprador extends React.Component{
                                         <InputMask 
                                             mask="99/99/9999" 
                                             maskChar={null}
-                                            placeholder="Ex: 10/05/2004"
+                                            placeholder="Ex: 20/03/1985"
 											value={this.state.contratadoEm}
-										    onChange={e => this.setState({contratadoEm: e.target.value})}
+											onChange={e => this.setState({contratadoEm: e.target.value})}
                                         /> 
-										
                                     </Form.Input>
+
 								</Form.Group>
-								
+
                                 <Form.Input
-                                    required
                                     fluid
-                                    label='Endereco Residencial'
-                                    maxLength="100"
+                                    label='Endereço Residencial'
                                     value={this.state.enderecoResidencial}
                                     onChange={e => this.setState({enderecoResidencial: e.target.value})}
+                                />
 
-                                />	
-
-                                    <Form.Input
-                                    required
+                                <Form.Input
                                     fluid
-                                    label='Endereco Comercial'
-                                    maxLength="100"
+                                    label='Endereço Comercial'
                                     value={this.state.enderecoComercial}
                                     onChange={e => this.setState({enderecoComercial: e.target.value})}
-
                                 />
 
                                 <Form.Group inline>
 
-									<label>Trabalha em Home Office? </label>
+                                    <label>Trabalha em Home Office? </label>
 
-									<Form.Radio
-										label='Sim'
-										checked={this.state.trabalhoHomeOffice}
-										onChange={e => this.setState({
-											trabalhoHomeOffice: true
-										})}
-									/>
-									
-									<Form.Radio
-										label='Não'
-										checked={!this.state.trabalhoHomeOffice}
-										onChange={e => this.setState({
-											trabalhoHomeOffice: false
-										})}
-									/>
+                                    <Form.Radio
+                                        label='Sim'
+                                        checked={this.state.trabahoHomeOffice}
+                                        onChange={e => this.setState({
+                                            trabahoHomeOffice: true
+                                        })}
+                                    />
 
-								</Form.Group>
-                                    
+                                    <Form.Radio
+                                        label='Não'
+                                        checked={!this.state.trabahoHomeOffice}
+                                        onChange={e => this.setState({
+                                            trabahoHomeOffice: false
+                                        })}
+                                    />
 
+                                </Form.Group>
 
 								<Form.Group widths='equal' style={{marginTop: '4%'}}  className='form--empresa-salvar'>
-								<Link to={'/list-comprador'}>
+
 									<Button
 										type="button"
 										inverted
@@ -154,11 +145,10 @@ class FormComprador extends React.Component{
 										icon
 										labelPosition='left'
 										color='orange'
-									
-										>Voltar
+									>
 										<Icon name='reply' />
+										<Link to={'/list-comprador'}>Voltar</Link>
 									</Button>
-									</Link>
 
 									<Container textAlign='right'>
 										

@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Header, Icon, Modal, Table } from 'semantic-ui-react';
 import { ENDERECO_API } from '../../views/util/Constantes';
+import MenuSistema from '../../MenuSistema';
 
 class ListCliente extends React.Component{
 
@@ -38,9 +39,9 @@ class ListCliente extends React.Component{
             return ''
         }
         
-        let dia = dataParam.substr(8,2);
-        let mes = dataParam.substr(5,2);
-        let ano = dataParam.substr(0,4);
+        let dia = dataParam[2];
+        let mes = dataParam[1];
+        let ano = dataParam[0];
         let dataFormatada = dia + '/' + mes + '/' + ano;
 
         return dataFormatada
@@ -87,6 +88,7 @@ class ListCliente extends React.Component{
     render(){
         return(
             <div>
+ <MenuSistema />
 
                 <div style={{marginTop: '3%'}}>
 
@@ -129,7 +131,7 @@ class ListCliente extends React.Component{
 
                                     { this.state.listaClientes.map(cliente => (
 
-                                        <Table.Row>
+                                        <Table.Row key={cliente.id}> 
                                             <Table.Cell>{cliente.nome}</Table.Cell>
                                             <Table.Cell>{cliente.cpf}</Table.Cell>
                                             <Table.Cell>{this.formatarData(cliente.dataNascimento)}</Table.Cell>
